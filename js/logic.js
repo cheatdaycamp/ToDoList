@@ -1,22 +1,15 @@
 class ToDo extends React.Component {
     constructor(props) {
         super(props);
-        this.renderItem = this.renderItem.bind(this);
         this.reset = this.reset.bind(this);
         this.addToDo = this.addToDo.bind(this);
         this.moveToDone = this.moveToDone.bind(this);
         this.checkAndPush = this.checkAndPush.bind(this);
-
+        this.deleteItem = this.deleteItem.bind(this)
         this.state = {
             todo: [],
             done: []
         }
-    }
-
-    renderItem(array) {
-        var that = this;
-        // return array.map((item, index) => <Item list={"todo"} element={item} keynumber={`ID${index}`} callbackMove={that.moveToDone} />)
-        return <Item element={item} keynumber={`ID${index}`} callbackMove={that.moveToDone} />
     }
 
     // resets all the items in both lists
@@ -29,7 +22,7 @@ class ToDo extends React.Component {
 
     // on button '+' adds a new element.
     addToDo(newElement) {
-        var myNewItem = <Item list={"todo"} element={newElement} callbackMove={this.moveToDone} />
+        var myNewItem = <Item list={"todo"} element={newElement} callbackMove={this.moveToDone} callbackDelete = {this.deleteItem}/>
         this.checkAndPush(myNewItem)
         // var myNewList = (this.state.todo).concat(myNewItem)
         // this.setState({
@@ -37,38 +30,39 @@ class ToDo extends React.Component {
         // })
     }
 
+    // deletes item
+    deleteItem(){
+        console.log("delete")
+    }
+
+    //moves between lists
     moveToDone() {
-        var tempshit;
-        // var arrayTemptodo = [];
-        // var arrayTempdone = [];
-        // var lucky = this.state.todo.filter(function(number) {
-        //     return number > 7;
-        //   });
+        var tempshit=[];
         for (var i = 0; i < this.state.todo.length; i++) {
-            if (this.state.todo[i].props.list == 'done') {
-                tempshit = this.state.todo[i];
-                console.log(tempshit)
+            if (this.state.todo[i].props.list !== 'todo') {
+                tempshit = (this.state.todo[i]);
+                console.log("the element" + tempshit)
                 var newTodo = this.state.todo.splice(i,1)
                 console.log(newTodo)
-                var newDone = this.state.done.push(tempshit)
+                var newDone = this.state.done.concat(tempshit);
+                console.log(newDone)
+                this.setState({
+                    todo: newTodo,
+                    done: newDone
+                })
+            } else if (this.state.todo[i].props.list !== 'done') {
+                tempshit = (this.state.done[i]);
+                console.log("the element" + tempshit)
+                var newTodo = this.state.done.concat(tempshit);
+                console.log(newTodo)
+                var newDone = this.state.todo.splice(i,1)
+                console.log(newDone)
                 this.setState({
                     todo: newTodo,
                     done: newDone
                 })
             }
         }
-        // if (newElement.props.list == "todo") {
-        //     var myNewList = (this.state.todo).concat(newElement)
-        //     this.setState({
-        //         todo: myNewList,
-        //     })
-        // } else {
-        //     var myNewList = (this.state.done).concat(newElement)
-        //     this.setState({
-        //         done: myNewList,
-        //     })
-        // }
-
     }
 
     // Checks the property of the item, an according to it, adds it to the right State in the parent component.
@@ -85,7 +79,6 @@ class ToDo extends React.Component {
             })
         }
     }
-
 
     render() {
         console.log("Rendering")
@@ -116,10 +109,13 @@ class Item extends React.Component {
         super(props);
         this.state = {
             category: this.props.list,
-            inputValue: this.props.element
+            inputValue: this.props.element,
+            delete: false,
         };
+        this.props.delete =false;
         this.updateInputValue = this.updateInputValue.bind(this)
         this.moveToDone = this.moveToDone.bind(this)
+        this.deleteThis = this.deleteThis.bind(this)
     }
 
     //toggles between todo and done state and prop
@@ -146,6 +142,15 @@ class Item extends React.Component {
         });
         this.props.element = e.target.value;
     }
+
+    //triggers the delete method on parent
+    deleteThis(){
+        this.props.delete = true;
+        this.setState({
+            delete: true
+        });
+        this.props.callbackDelete()
+    }
     render() {
         console.log(this.state.category);
         return (
@@ -163,7 +168,7 @@ class Item extends React.Component {
                     <div className="circleSmall">
                         <i className="fas fa-star"></i>
                     </div>
-                    <div className="circleSmall">
+                    <div  onClick={this.deleteThis} className="circleSmall">
                         <i className="fas fa-trash-alt"></i>
                     </div>
                 </div>
