@@ -15,31 +15,65 @@ class ToDo extends React.Component {
 
     renderItem(array) {
         var that = this;
-        return array.map((item) => <Item element={item} callbackMove={that.moveToDone} />)
+        // return array.map((item, index) => <Item list={"todo"} element={item} keynumber={`ID${index}`} callbackMove={that.moveToDone} />)
+        return <Item element={item} keynumber={`ID${index}`} callbackMove={that.moveToDone} />
     }
+
+    // resets all the items in both lists
     reset() {
         this.setState({
             todo: [],
             done: [],
         })
     }
+
+    // on button '+' adds a new element.
     addToDo(newElement) {
-        var myNewItem = <Item element={newElement}/>
-        var myNewList = (this.state.todo).concat(myNewItem)
-        this.setState({
-            todo: myNewList,
-        })
-    }
-    moveToDone() {
-        console.log("asasda")
-        var move = this.state.todo.filter((item, j) => i !== j);
-        // var myNewList = (this.state.todo).concat(newElement)
+        var myNewItem = <Item list={"todo"} element={newElement} callbackMove={this.moveToDone} />
+        this.checkAndPush(myNewItem)
+        // var myNewList = (this.state.todo).concat(myNewItem)
         // this.setState({
         //     todo: myNewList,
         // })
     }
-    checkAndPush(e) {
-        if (e.target.state.category == "todo") {
+
+    moveToDone() {
+        var tempshit;
+        // var arrayTemptodo = [];
+        // var arrayTempdone = [];
+        // var lucky = this.state.todo.filter(function(number) {
+        //     return number > 7;
+        //   });
+        for (var i = 0; i < this.state.todo.length; i++) {
+            if (this.state.todo[i].props.list == 'done') {
+                tempshit = this.state.todo[i];
+                console.log(tempshit)
+                var newTodo = this.state.todo.splice(i,1)
+                console.log(newTodo)
+                var newDone = this.state.done.push(tempshit)
+                this.setState({
+                    todo: newTodo,
+                    done: newDone
+                })
+            }
+        }
+        // if (newElement.props.list == "todo") {
+        //     var myNewList = (this.state.todo).concat(newElement)
+        //     this.setState({
+        //         todo: myNewList,
+        //     })
+        // } else {
+        //     var myNewList = (this.state.done).concat(newElement)
+        //     this.setState({
+        //         done: myNewList,
+        //     })
+        // }
+
+    }
+
+    // Checks the property of the item, an according to it, adds it to the right State in the parent component.
+    checkAndPush(newElement) {
+        if (newElement.props.list == "todo") {
             var myNewList = (this.state.todo).concat(newElement)
             this.setState({
                 todo: myNewList,
@@ -51,10 +85,12 @@ class ToDo extends React.Component {
             })
         }
     }
+
+
     render() {
-        console.log(this.state)
+        console.log("Rendering")
         var todo = this.state.todo,
-            done = this.renderItem(this.state.done)
+            done = this.state.done;
         return (
             <div className="appContainer">
                 <Input callbackReset={this.reset} callbackAddToDo={this.addToDo} />
@@ -79,41 +115,47 @@ class Item extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            category: "todo",
+            category: this.props.list,
             inputValue: this.props.element
         };
         this.updateInputValue = this.updateInputValue.bind(this)
         this.moveToDone = this.moveToDone.bind(this)
     }
 
+    //toggles between todo and done state and prop
     moveToDone(e) {
         if (this.state.category == 'todo') {
             this.setState({
                 category: 'done'
             });
+            this.props.list = 'done'
         } else {
             this.setState({
                 category: 'todo'
             });
+            this.props.list = 'todo'
+
         }
-        this.props.callbackMove
+        this.props.callbackMove()
     }
+
+    //updates the input value when the user clicks on the pencil
     updateInputValue(e) {
-        console.log(e.target.value)
         this.setState({
             inputValue: e.target.value
         });
+        this.props.element = e.target.value;
     }
     render() {
         console.log(this.state.category);
         return (
-            <li key={this.props.element} >
+            <li key={this.props.keynumber} >
                 <div className="itemWrapper">
                     <div onClick={this.moveToDone} className="circleSmall nomargin">
                         <i className="fas fa-check"></i>
                     </div>
                 </div>
-                <input onBlur = {this.updateInputValue} type="text" className="items" value={this.state.inputValue}></input>
+                <input onBlur={this.updateInputValue} type="text" className="items" value={this.state.inputValue}></input>
                 <div className="itemWrapper">
                     <div onClick={this.updateInputValue} className="circleSmall">
                         <i className="fas fa-pencil-alt"></i>
