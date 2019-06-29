@@ -96,7 +96,6 @@ class Item extends React.Component {
                 category: 'todo'
             });
         }
-        console.log(e.target)
         this.props.callbackMove
     }
     updateInputValue(e) {
@@ -114,7 +113,7 @@ class Item extends React.Component {
                         <i className="fas fa-check"></i>
                     </div>
                 </div>
-                <input type="text" className="items" value={this.state.inputValue}></input>
+                <input onBlur = {this.updateInputValue} type="text" className="items" value={this.state.inputValue}></input>
                 <div className="itemWrapper">
                     <div onClick={this.updateInputValue} className="circleSmall">
                         <i className="fas fa-pencil-alt"></i>
