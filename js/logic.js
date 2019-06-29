@@ -2,19 +2,20 @@ class ToDo extends React.Component {
     constructor(props) {
         super(props);
         this.renderItem = this.renderItem.bind(this);
-        this.updateToDo = this.updateToDo.bind(this);
-        this.updateDone = this.updateDone.bind(this);
         this.reset = this.reset.bind(this);
         this.addToDo = this.addToDo.bind(this);
+        this.moveToDone = this.moveToDone.bind(this);
+        this.checkAndPush = this.checkAndPush.bind(this);
 
         this.state = {
-            todo: ["play the guitar", "asdas"],
-            done: ["Build a 3m sand castle", "Running", "Jogging"]
+            todo: [],
+            done: []
         }
     }
 
     renderItem(array) {
-        return array.map((item) => <Item element={item} />)
+        var that = this;
+        return array.map((item) => <Item element={item} callbackMove={that.moveToDone} />)
     }
     reset() {
         this.setState({
@@ -22,25 +23,37 @@ class ToDo extends React.Component {
             done: [],
         })
     }
-    updateToDo() {
-        var that = this;
-        return that.renderItem(this.state.todo);
-    }
-    updateDone() {
-        var that = this;
-        return that.renderItem(this.state.done)
-    }
     addToDo(newElement) {
-        console.log("the new element is " + newElement);
-        var myNewList = (this.state.todo).concat(newElement)
-        console.log("the current list is " + myNewList)
+        var myNewItem = <Item element={newElement}/>
+        var myNewList = (this.state.todo).concat(myNewItem)
         this.setState({
             todo: myNewList,
         })
     }
+    moveToDone() {
+        console.log("asasda")
+        var move = this.state.todo.filter((item, j) => i !== j);
+        // var myNewList = (this.state.todo).concat(newElement)
+        // this.setState({
+        //     todo: myNewList,
+        // })
+    }
+    checkAndPush(e) {
+        if (e.target.state.category == "todo") {
+            var myNewList = (this.state.todo).concat(newElement)
+            this.setState({
+                todo: myNewList,
+            })
+        } else {
+            var myNewList = (this.state.done).concat(newElement)
+            this.setState({
+                done: myNewList,
+            })
+        }
+    }
     render() {
-        console.log(typeof (this.state.todo));
-        var todo = this.renderItem(this.state.todo),
+        console.log(this.state)
+        var todo = this.state.todo,
             done = this.renderItem(this.state.done)
         return (
             <div className="appContainer">
@@ -61,44 +74,68 @@ class ToDo extends React.Component {
         )
     } x
 }
+
 class Item extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            inputValue: ""
+            category: "todo",
+            inputValue: this.props.element
+        };
+        this.updateInputValue = this.updateInputValue.bind(this)
+        this.moveToDone = this.moveToDone.bind(this)
+    }
+
+    moveToDone(e) {
+        if (this.state.category == 'todo') {
+            this.setState({
+                category: 'done'
+            });
+        } else {
+            this.setState({
+                category: 'todo'
+            });
         }
+        console.log(e.target)
+        this.props.callbackMove
+    }
+    updateInputValue(e) {
+        console.log(e.target.value)
+        this.setState({
+            inputValue: e.target.value
+        });
     }
     render() {
+        console.log(this.state.category);
         return (
-            <li key={this.props.element}>
+            <li key={this.props.element} >
                 <div className="itemWrapper">
-                    <div className="circleSmall nomargin">
+                    <div onClick={this.moveToDone} className="circleSmall nomargin">
                         <i className="fas fa-check"></i>
                     </div>
-                    <div className="items">{this.props.element}</div>
                 </div>
-
+                <input type="text" className="items" value={this.state.inputValue}></input>
                 <div className="itemWrapper">
-                    <div className="circleSmall ">
+                    <div onClick={this.updateInputValue} className="circleSmall">
                         <i className="fas fa-pencil-alt"></i>
                     </div>
                     <div className="circleSmall">
                         <i className="fas fa-star"></i>
                     </div>
                     <div className="circleSmall">
-                        <i className="fas fa-minus"></i>
+                        <i className="fas fa-trash-alt"></i>
                     </div>
                 </div>
             </li>);
     }
 
 }
+
 class Input extends React.Component {
     constructor(props) {
         super(props);
         this.addItem = this.addItem.bind(this);
         this.updateInputValue = this.updateInputValue.bind(this)
-
         this.state = {
             inputValue: ""
         }
@@ -117,7 +154,6 @@ class Input extends React.Component {
 
     }
     render() {
-        console.log("rendered")
         return (
             <div className="wrapper">
                 <div className="header">
