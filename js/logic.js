@@ -1,9 +1,3 @@
-var data_utils = {
-    todo: ["Cook dinner", "Catch some Pokemons", "play the guitar"],
-    done: ["Build a 3m sand castle", "Running", "Jogging",
-    ]
-}
-
 class ToDo extends React.Component {
     constructor(props) {
         super(props);
@@ -20,27 +14,7 @@ class ToDo extends React.Component {
     }
 
     renderItem(array) {
-        return array.map((element) =>
-            <li key={element}>
-                <div className="itemWrapper">
-                    <div className="circleSmall nomargin">
-                        <i className="fas fa-check"></i>
-                    </div>
-                    <div className="items">{element}</div>
-                </div>
-
-                <div className="itemWrapper">
-                    <div className="circleSmall ">
-                        <i className="fas fa-pencil-alt"></i>
-                    </div>
-                    <div className="circleSmall">
-                        <i className="fas fa-star"></i>
-                    </div>
-                    <div className="circleSmall">
-                        <i className="fas fa-minus"></i>
-                    </div>
-                </div>
-            </li>);
+        return array.map((item) => <Item element={item} />)
     }
     reset() {
         this.setState({
@@ -65,7 +39,7 @@ class ToDo extends React.Component {
         })
     }
     render() {
-        console.log (typeof(this.state.todo));
+        console.log(typeof (this.state.todo));
         var todo = this.renderItem(this.state.todo),
             done = this.renderItem(this.state.done)
         return (
@@ -87,7 +61,38 @@ class ToDo extends React.Component {
         )
     } x
 }
+class Item extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            inputValue: ""
+        }
+    }
+    render() {
+        return (
+            <li key={this.props.element}>
+                <div className="itemWrapper">
+                    <div className="circleSmall nomargin">
+                        <i className="fas fa-check"></i>
+                    </div>
+                    <div className="items">{this.props.element}</div>
+                </div>
 
+                <div className="itemWrapper">
+                    <div className="circleSmall ">
+                        <i className="fas fa-pencil-alt"></i>
+                    </div>
+                    <div className="circleSmall">
+                        <i className="fas fa-star"></i>
+                    </div>
+                    <div className="circleSmall">
+                        <i className="fas fa-minus"></i>
+                    </div>
+                </div>
+            </li>);
+    }
+
+}
 class Input extends React.Component {
     constructor(props) {
         super(props);
@@ -98,8 +103,7 @@ class Input extends React.Component {
             inputValue: ""
         }
     }
-    addItem(e) {
-        console.log("Input Value: " + this.state.inputValue)
+    addItem() {
         this.props.callbackAddToDo(this.state.inputValue)
         this.setState({
             inputValue: ""
