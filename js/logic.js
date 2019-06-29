@@ -11,8 +11,10 @@ class ToDo extends React.Component {
         this.updateToDo = this.updateToDo.bind(this);
         this.updateDone = this.updateDone.bind(this);
         this.reset = this.reset.bind(this);
+        this.addToDo = this.addToDo.bind(this);
+
         this.state = {
-            todo: [],
+            todo: ["play the guitar", "asdas"],
             done: ["Build a 3m sand castle", "Running", "Jogging"]
         }
     }
@@ -47,32 +49,38 @@ class ToDo extends React.Component {
         })
     }
     updateToDo() {
-        return this.renderItem(this.state.todo);
+        var that = this;
+        return that.renderItem(this.state.todo);
     }
     updateDone() {
-        return this.renderItem(this.state.done)
+        var that = this;
+        return that.renderItem(this.state.done)
     }
-    addToDo(){
+    addToDo(newElement) {
+        console.log("the new element is " + newElement);
+        var myNewList = (this.state.todo).concat(newElement)
+        console.log("the current list is " + myNewList)
         this.setState({
-            todo: [],
-            done: [],
+            todo: myNewList,
         })
     }
     render() {
-        console.log("check")
+        console.log (typeof(this.state.todo));
+        var todo = this.renderItem(this.state.todo),
+            done = this.renderItem(this.state.done)
         return (
             <div className="appContainer">
-                <Input callbackReset = {this.reset}/>
+                <Input callbackReset={this.reset} callbackAddToDo={this.addToDo} />
                 <div>To Do: </div>
                 <div className="toDo">
                     <ul>
-                        {this.updateToDo()}
+                        {todo}
                     </ul>
                 </div>
                 <div>Done:</div>
                 <div className="done">
                     <ul>
-                        {this.updateDone()}
+                        {done}
                     </ul>
                 </div>
             </div>
@@ -90,17 +98,19 @@ class Input extends React.Component {
             inputValue: ""
         }
     }
-    addItem() {
+    addItem(e) {
         console.log("Input Value: " + this.state.inputValue)
-        data_utils.todo.push(this.state.inputValue);
+        this.props.callbackAddToDo(this.state.inputValue)
         this.setState({
             inputValue: ""
         });
+
     }
     updateInputValue(e) {
         this.setState({
             inputValue: e.target.value
         });
+
     }
     render() {
         console.log("rendered")
