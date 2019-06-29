@@ -7,7 +7,14 @@ var data_utils = {
 class ToDo extends React.Component {
     constructor(props) {
         super(props);
-        this.renderItem = this.renderItem.bind(this)
+        this.renderItem = this.renderItem.bind(this);
+        this.updateToDo = this.updateToDo.bind(this);
+        this.updateDone = this.updateDone.bind(this);
+        this.reset = this.reset.bind(this);
+        this.state = {
+            todo: [],
+            done: ["Build a 3m sand castle", "Running", "Jogging"]
+        }
     }
 
     renderItem(array) {
@@ -34,26 +41,38 @@ class ToDo extends React.Component {
             </li>);
     }
     reset() {
-        data_utils.todo = [];
-        data_utils.done = [];
+        this.setState({
+            todo: [],
+            done: [],
+        })
     }
-
+    updateToDo() {
+        return this.renderItem(this.state.todo);
+    }
+    updateDone() {
+        return this.renderItem(this.state.done)
+    }
+    addToDo(){
+        this.setState({
+            todo: [],
+            done: [],
+        })
+    }
     render() {
-        var todo = this.renderItem(data_utils.todo);
-        var done = this.renderItem(data_utils.done)
+        console.log("check")
         return (
             <div className="appContainer">
-                <Input />
+                <Input callbackReset = {this.reset}/>
                 <div>To Do: </div>
                 <div className="toDo">
                     <ul>
-                        {todo}
+                        {this.updateToDo()}
                     </ul>
                 </div>
                 <div>Done:</div>
                 <div className="done">
                     <ul>
-                        {done}
+                        {this.updateDone()}
                     </ul>
                 </div>
             </div>
@@ -86,45 +105,16 @@ class Input extends React.Component {
     render() {
         console.log("rendered")
         return (
-            <div className="header">
-                <input type="text" value={this.state.inputValue} onChange = {this.updateInputValue} placeholder="what should I do next?" />
-                <div onClick={this.addItem} className="add"><i className="fas fa-plus"></i></div>
+            <div className="wrapper">
+                <div className="header">
+                    <input type="text" value={this.state.inputValue} onChange={this.updateInputValue} placeholder="what should I do next?" />
+                    <div onClick={this.addItem} className="add"><i className="fas fa-plus"></i></div>
+                </div>
+                <div onClick={this.props.callbackReset} className="add"><i className="fas fa-redo"></i></div>
             </div>
         )
     }
 }
-class Item extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
-    render() {
-        return (
-            <li>
-                <div className="itemWrapper">
-                    <div className="circleSmall nomargin">
-                        <i className="fas fa-check"></i>
-                    </div>
-                    <div className="items">Pija</div>
-                </div>
-
-                <div className="itemWrapper">
-                    <div className="circleSmall ">
-                        <i className="fas fa-pencil-alt"></i>
-                    </div>
-                    <div className="circleSmall">
-                        <i className="fas fa-star"></i>
-                    </div>
-                    <div className="circleSmall">
-                        <i className="fas fa-minus"></i>
-                    </div>
-                </div>
-            </li>
-        )
-    }
-}
-
-
 
 (() => {
     ReactDOM.render(
