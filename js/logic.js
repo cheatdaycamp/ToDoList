@@ -6,11 +6,11 @@ class ToDo extends React.Component {
         this.moveToDone = this.moveToDone.bind(this);
         this.checkAndPush = this.checkAndPush.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
-        this.updateItem = this.updateItem.bind(this);
         this.state = {
             todo: [],
-            done: []
+            done: [],
         }
+        this.nextId = 0;
     }
 
     // resets all the items in both lists
@@ -19,48 +19,41 @@ class ToDo extends React.Component {
             todo: [],
             done: [],
         })
+        this.nextId = 0;
     }
 
     // on button '+' adds a new element.
     addToDo(newElement) {
-        var myNewItem = <Item list={"todo"} element={newElement} callbackMove={this.moveToDone} callbackDelete={this.deleteItem} />
-        this.checkAndPush(myNewItem)
+        var myNewItem = <Item list={"todo"} keyword={this.nextId} element={newElement} callbackMove={this.moveToDone} callbackDelete={this.deleteItem} />;
+        this.nextId++;
+        this.setState({
+            todo: this.state.todo.concat(myNewItem)
+        })
     }
 
     // deletes item
-    deleteItem() {
-        console.log("delete");
-        console.log(this.state.todo)
-        var filtered = this.state.todo.filter((val) => {
-            console.log(val.props.delete);
-            return !val.props.delete
-        });
-        var updateFiltered = this.state.todo.map((item) => {
-            if (item.props.delete){
-                
-            }
-        })
-        console.log(updateFiltered);
-        this.updateItem(filtered);
-        // return filtered;
-    }
-
-    updateItem(array) {
+    deleteItem(idReceived) {
         this.setState({
-            todo: array
-        })
+            todo: this.state.todo.filter((val) => {
+                return val.props.keyword !== idReceived
+            }),
+            done: this.state.done.filter((val) => {
+                return val.props.keyword !== idReceived
+            })
+        });
+        // this.state.todo.map((d) => d.setState({ inputValue: this.props.element }))
     }
-
+    // updateShit(){
+    //     this.state.todo.map((d) => this.setState({inputValue: this.props.element}))
+    // }
     //moves between lists
     moveToDone() {
-        var tempValue = [];
+        var newTodo = this.state.todo, newDone = this.state.done, tempValue;
         for (var i = 0; i < this.state.todo.length; i++) {
             if (this.state.todo[i].props.list !== 'todo') {
                 tempValue = (this.state.todo[i]);
-                var newTodo = this.state.todo.splice(i, 1)
-                console.log(newTodo)
-                var newDone = this.state.done.concat(tempValue);
-                console.log(newDone)
+                newTodo = this.state.todo.splice(i, 1)
+                newDone = this.state.done.push(tempValue);
                 this.setState({
                     todo: newTodo,
                     done: newDone
@@ -69,11 +62,8 @@ class ToDo extends React.Component {
 
             // else if (this.state.todo[i].props.list !== 'done') {
             //     tempValue = (this.state.done[i]);
-            //     console.log("the element" + tempValue)
             //     var newTodo = this.state.done.concat(tempValue);
-            //     console.log(newTodo)
             //     var newDone = this.state.todo.splice(i,1)
-            //     console.log(newDone)
             //     this.setState({
             //         todo: newTodo,
             //         done: newDone
@@ -84,17 +74,12 @@ class ToDo extends React.Component {
 
     // Checks the property of the item, an according to it, adds it to the right State in the parent component.
     checkAndPush(newElement) {
-        if (newElement.props.list == "todo") {
-            var myNewList = (this.state.todo).concat(newElement)
-            this.setState({
-                todo: myNewList,
-            })
-        } else {
-            var myNewList = (this.state.done).concat(newElement)
-            this.setState({
-                done: myNewList,
-            })
-        }
+        var newTodo = this.state.todo, newDone = this.state.done;
+        (newElement.props.list == "todo") ? newTodo.push(newElement) : newTodo.push(newElement);
+        this.setState({
+            todo: newTodo,
+            done: newDone,
+        })
     }
 
     render() {
@@ -129,14 +114,13 @@ class Item extends React.Component {
             delete: false,
         };
         this.props.delete = false;
-
         this.updateInputValue = this.updateInputValue.bind(this)
         this.moveToDone = this.moveToDone.bind(this)
         this.deleteThis = this.deleteThis.bind(this)
     }
 
     //toggles between todo and done state and prop
-    moveToDone(e) {
+    moveToDone() {
         if (this.state.category == 'todo') {
             this.setState({
                 category: 'done'
@@ -147,7 +131,6 @@ class Item extends React.Component {
                 category: 'todo'
             });
             this.props.list = 'todo'
-
         }
         this.props.callbackMove()
     }
@@ -166,11 +149,12 @@ class Item extends React.Component {
         this.setState({
             delete: true
         });
-        this.props.callbackDelete()
+        this.props.callbackDelete(this.props.keyword)
     }
     render() {
+        this.props.element = this.props.inputValue;
         return (
-            <li key={this.props.keynumber} >
+            <li key={this.props.keyword} >
                 <div className="itemWrapper">
                     <div onClick={this.moveToDone} className="circleSmall nomargin">
                         <i className="fas fa-check"></i>
@@ -190,7 +174,6 @@ class Item extends React.Component {
                 </div>
             </li>);
     }
-
 }
 
 class Input extends React.Component {
@@ -207,7 +190,6 @@ class Input extends React.Component {
         this.setState({
             inputValue: ""
         });
-
     }
     updateInputValue(e) {
         this.setState({
