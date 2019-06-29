@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang=en xml:lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="REACT">
+    <meta name="keywords" content="React, JSX, CheatDayCamp">
+    <meta name="author" content="Jonatan Kruszewski">
+    <title>
+        AntDo - Do More
+    </title>
+    <link rel="Icon" href="./img/ant.png">
+    <!--CSS-->
+    <link rel="stylesheet" href="./css/style.css">
+    <!--CSS-->
+
+    <!-- cdn links -->
+    <script src="https://fb.me/react-0.14.0.js"></script>
+    <script src="https://fb.me/react-dom-0.14.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.25/browser.min.js"></script>
+    <!-- css file -->
+
+    <!--font awesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+        integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <!--font awesome-->
+
+
+    <!--FONTS-->
+    <link href="https://fonts.googleapis.com/css?family=Bad+Script&display=swap" rel="stylesheet">
+    <!--FONTS-->
+
+
+
+</head>
+
+<body>
+    <div id="root">
+        <div class="wrapper">
+            <div class="header">
+                <input type="text" placeholder="what should I do next?" />
+                <div class="add"><i class="fas fa-plus"></i></div>
+            </div>
+            <hr>
+            </hr>
+            <div>To Do: </div>
+            <div class="toDo">
+                <ul>
+                    <li>
+                        <div class="itemWrapper">
+                            <div class="circleSmall nomargin">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="items">Pija</div>
+                        </div>
+
+                        <div class="itemWrapper">
+                            <div class="circleSmall ">
+                                <i class="fas fa-pencil-alt"></i>
+                            </div>
+                            <div class="circleSmall">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="circleSmall">
+                                <i class="fas fa-minus"></i>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <hr>
+            </hr>
+            <div>Done:</div>
+            <div class="done">
+                <ul>
+                    <li>
+                        <div class="itemWrapper">
+                            <div class="circleSmall nomargin">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="items">Pija</div>
+                        </div>
+
+                        <div class="itemWrapper">
+                            <div class="circleSmall">
+                                <i class="fas fa-pencil-alt"></i>
+                            </div>
+                            <div class="circleSmall">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="circleSmall">
+                                <i class="fas fa-minus"></i>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- <div class="footerWrapper">
+                <div class="footer">Ant Do - the most powerfull to do list</div>
+            </div> -->
+        </div>
+    </div>
+
+
+    <!-- OFFLINE -->
+    <script src="./offline/babel.js"></script>
+    <script src="./offline/react.js"></script>
+    <script src="./offline/react-dom.js"></script>
+    <!-- OFFLINE -->
+
+    <!-- js file -->
+    <script type="text/babel" src="./js/logic.js"></script>
+    <!-- js file -->
+</body>
+
+</HTML>
