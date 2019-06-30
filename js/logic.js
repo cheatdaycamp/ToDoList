@@ -24,6 +24,7 @@ class ToDo extends React.Component {
 
     // on button '+' adds a new element.
     addToDo(newElement) {
+        console.log(newElement)
         var myNewItem = <Item list={"todo"} keyword={this.nextId} element={newElement} callbackMove={this.moveToDone} callbackDelete={this.deleteItem} />;
         this.nextId++;
         this.setState({
@@ -33,6 +34,7 @@ class ToDo extends React.Component {
 
     // deletes item
     deleteItem(idReceived) {
+        console.log(idReceived);
         this.setState({
             todo: this.state.todo.filter((val) => {
                 return val.props.keyword !== idReceived
@@ -43,10 +45,7 @@ class ToDo extends React.Component {
         });
         // this.state.todo.map((d) => d.setState({ inputValue: this.props.element }))
     }
-    // updateShit(){
-    //     this.state.todo.map((d) => this.setState({inputValue: this.props.element}))
-    // }
-    //moves between lists
+
     moveToDone() {
         var newTodo = this.state.todo, newDone = this.state.done, tempValue;
         for (var i = 0; i < this.state.todo.length; i++) {
@@ -85,6 +84,7 @@ class ToDo extends React.Component {
     render() {
         var todo = this.state.todo,
             done = this.state.done;
+        console.log(this.state.todo);
         return (
             <div className="appContainer">
                 <Input callbackReset={this.reset} callbackAddToDo={this.addToDo} />
@@ -108,6 +108,7 @@ class ToDo extends React.Component {
 class Item extends React.Component {
     constructor(props) {
         super(props);
+        console.log(`constructor ${this.props.element}`)
         this.state = {
             category: this.props.list,
             inputValue: this.props.element,
@@ -140,15 +141,15 @@ class Item extends React.Component {
         this.setState({
             inputValue: e.target.value
         });
-        this.props.element = e.target.value;
+        // this.props.element = e.target.value;
     }
 
     //triggers the delete method on parent
     deleteThis() {
-        this.props.delete = true;
-        this.setState({
-            delete: true
-        });
+        // this.props.delete = true;
+        // this.setState({
+        //     delete: true
+        // });
         this.props.callbackDelete(this.props.keyword)
     }
     render() {
@@ -162,7 +163,7 @@ class Item extends React.Component {
                 </div>
                 <input onBlur={this.updateInputValue} type="text" className="items" value={this.state.inputValue}></input>
                 <div className="itemWrapper">
-                    <div onClick={this.updateInputValue} className="circleSmall">
+                    <div className="circleSmall">
                         <i className="fas fa-pencil-alt"></i>
                     </div>
                     <div className="circleSmall">
@@ -186,7 +187,9 @@ class Input extends React.Component {
         this.updateInputValue = this.updateInputValue.bind(this)
     }
     addItem() {
-        this.props.callbackAddToDo(this.state.inputValue)
+        console.log(this.state.inputValue);
+        this.props.callbackAddToDo(this.state.inputValue);
+        console.log("after adding item")
         this.setState({
             inputValue: ""
         });
