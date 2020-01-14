@@ -1,4 +1,5 @@
 class ToDo extends React.Component {
+
     constructor(props) {
         super(props);
         this.reset = this.reset.bind(this);
@@ -7,91 +8,63 @@ class ToDo extends React.Component {
         this.checkAndPush = this.checkAndPush.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.state = {
-            todo: [],
-            done: [],
-        }
+            todos: [],
+        };
         this.nextId = 0;
     }
 
     // resets all the items in both lists
     reset() {
         this.setState({
-            todo: [],
-            done: [],
-        })
+            todos: [],
+        });
         this.nextId = 0;
     }
 
     // on button '+' adds a new element.
     addToDo(newElement) {
-        console.log(newElement)
-        var myNewItem = <Item list={"todo"} keyword={this.nextId} element={newElement} callbackMove={this.moveToDone} callbackDelete={this.deleteItem} />;
+        console.log(newElement);
         this.nextId++;
-        this.setState({
-            todo: this.state.todo.concat(myNewItem)
-        })
+        todo = {
+            "id": this.nextId,
+            "activity": newElement,
+            "done": false
+        };
+        this.setState(() => {
+            todos:this.state.todos.push(todo)
+        });
     }
 
     // deletes item
     deleteItem(idReceived) {
-        console.log(idReceived);
-        this.setState({
-            todo: this.state.todo.filter((val) => {
-                return val.props.keyword !== idReceived
-            }),
-            done: this.state.done.filter((val) => {
-                return val.props.keyword !== idReceived
-            })
+        let list = this.state.todos;
+        list.splice(todos.findIndex((item) => {
+            return item.id === idReceived;
+        }), 1);
+        this.setState(() => {
+            todos : list
         });
-        // this.state.todo.map((d) => d.setState({ inputValue: this.props.element }))
     }
 
-    moveToDone() {
-        var newTodo = this.state.todo, newDone = this.state.done, tempValue;
-        for (var i = 0; i < this.state.todo.length; i++) {
-            if (this.state.todo[i].props.list !== 'todo') {
-                tempValue = (this.state.todo[i]);
-                newTodo = this.state.todo.splice(i, 1)
-                newDone = this.state.done.push(tempValue);
-                this.setState({
-                    todo: newTodo,
-                    done: newDone
-                })
-            }
-
-            // else if (this.state.todo[i].props.list !== 'done') {
-            //     tempValue = (this.state.done[i]);
-            //     var newTodo = this.state.done.concat(tempValue);
-            //     var newDone = this.state.todo.splice(i,1)
-            //     this.setState({
-            //         todo: newTodo,
-            //         done: newDone
-            //     })
-            // }
-        } tempValue = [];
-    };
-
-    // Checks the property of the item, an according to it, adds it to the right State in the parent component.
-    checkAndPush(newElement) {
-        var newTodo = this.state.todo, newDone = this.state.done;
-        (newElement.props.list == "todo") ? newTodo.push(newElement) : newTodo.push(newElement);
-        this.setState({
-            todo: newTodo,
-            done: newDone,
-        })
-    }
 
     render() {
-        var todo = this.state.todo,
-            done = this.state.done;
-        console.log(this.state.todo);
+        let todo = this.state.todos.filter((item) => {
+            return item.done === false
+        });
+        let done = this.state.todos.filter((item) => {
+            return item.done === true
+        });
+
+
         return (
             <div className="appContainer">
-                <Input callbackReset={this.reset} callbackAddToDo={this.addToDo} />
-                <div>To Do: </div>
+                <Input callbackReset={this.reset} callbackAddToDo={this.addToDo}/>
+                <div>To Do:</div>
                 <div className="toDo">
                     <ul>
-                        {todo}
+                        {todo.map((item) =>
+                            <item todo={item}></item>
+                        )}
                     </ul>
                 </div>
                 <div>Done:</div>
@@ -108,19 +81,13 @@ class ToDo extends React.Component {
 class Item extends React.Component {
     constructor(props) {
         super(props);
-        console.log(`constructor ${this.props.element}`)
-        this.state = {
-            category: this.props.list,
-            inputValue: this.props.element,
-            delete: false,
-        };
         this.props.delete = false;
         this.updateInputValue = this.updateInputValue.bind(this)
         this.moveToDone = this.moveToDone.bind(this)
         this.deleteThis = this.deleteThis.bind(this)
     }
 
-    //toggles between todo and done state and prop
+    //toggles
     moveToDone() {
         if (this.state.category == 'todo') {
             this.setState({
@@ -146,22 +113,26 @@ class Item extends React.Component {
 
     //triggers the delete method on parent
     deleteThis() {
-        // this.props.delete = true;
-        // this.setState({
-        //     delete: true
-        // });
         this.props.callbackDelete(this.props.keyword)
     }
+
     render() {
         this.props.element = this.props.inputValue;
         return (
-            <li key={this.props.keyword} >
+            <li key={this.props.todo.id}>
                 <div className="itemWrapper">
                     <div onClick={this.moveToDone} className="circleSmall nomargin">
                         <i className="fas fa-check"></i>
                     </div>
                 </div>
-                <input onBlur={this.updateInputValue} type="text" className="items" value={this.state.inputValue}></input>
+                {/*<input onBlur={this.updateInputValue} type="text" className="items"*/}
+                {/*       value={this.props.todo.activity}>*/}
+                {/*</input>*/}
+
+                <span>
+                    {this.props.todo.activity}
+                </span>
+
                 <div className="itemWrapper">
                     <div className="circleSmall">
                         <i className="fas fa-pencil-alt"></i>
@@ -176,7 +147,7 @@ class Item extends React.Component {
             </li>);
     }
 }
-
+// asasd
 class Input extends React.Component {
     constructor(props) {
         super(props);
@@ -186,6 +157,7 @@ class Input extends React.Component {
         this.addItem = this.addItem.bind(this);
         this.updateInputValue = this.updateInputValue.bind(this)
     }
+
     addItem() {
         console.log(this.state.inputValue);
         this.props.callbackAddToDo(this.state.inputValue);
@@ -194,16 +166,19 @@ class Input extends React.Component {
             inputValue: ""
         });
     }
+
     updateInputValue(e) {
         this.setState({
             inputValue: e.target.value
         });
     }
+
     render() {
         return (
             <div className="wrapper">
                 <div className="header">
-                    <input type="text" value={this.state.inputValue} onChange={this.updateInputValue} placeholder="what should I do next?" />
+                    <input type="text" value={this.state.inputValue} onChange={this.updateInputValue}
+                           placeholder="what should I do next?"/>
                     <div onClick={this.addItem} className="add"><i className="fas fa-plus"></i></div>
                 </div>
                 <div onClick={this.props.callbackReset} className="add"><i className="fas fa-redo"></i></div>
@@ -214,7 +189,7 @@ class Input extends React.Component {
 
 (() => {
     ReactDOM.render(
-        <ToDo />,
+        <ToDo/>,
         document.getElementById("root"));
 })();
 
