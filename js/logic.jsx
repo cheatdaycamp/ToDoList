@@ -38,24 +38,20 @@ class ToDo extends React.Component {
       activity: newElement,
       done: false
     };
-    console.log(toDo);
-
-    let new_list = this.state.toDoList.concat([toDo])
-    console.log(new_list)
     this.setState({
-      toDoList: new_list
+      toDoList: this.state.toDoList.concat([toDo])
     });
   }
 
   // deletes item
   deleteItem(idReceived) {
+      console.log(idReceived)
     let list = this.state.toDoList;
-    list.splice(
-      todos.findIndex(item => {
-        return item.id === idReceived;
-      }),
-      1
-    );
+    list = list.filter(todo=>{
+         return todo.id !== idReceived
+    }
+    )
+    console.log(list)
     this.setState({
       toDoList: list
     });
@@ -77,7 +73,7 @@ class ToDo extends React.Component {
         <div className="toDo">
           <ul>
             {toDos.map(item => (
-              <Item todo={item} key={item.id} />
+              <Item todo={item} key={item.id} callbackDelete={this.deleteItem}/>
             ))}
           </ul>
         </div>
@@ -105,17 +101,7 @@ class Item extends React.Component {
 
   //toggles
   moveToDone() {
-    if (this.state.category == "todo") {
-      this.setState({
-        category: "done"
-      });
-      this.props.list = "done";
-    } else {
-      this.setState({
-        category: "todo"
-      });
-      this.props.list = "todo";
-    }
+
     this.props.callbackMove();
   }
 
@@ -129,7 +115,7 @@ class Item extends React.Component {
 
   //triggers the delete method on parent
   deleteThis() {
-    this.props.callbackDelete(this.props.keyword);
+    this.props.callbackDelete(this.props.todo.id);
   }
 
   render() {
