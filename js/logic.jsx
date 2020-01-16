@@ -83,13 +83,12 @@ class ToDo extends React.Component {
     }
 
     render() {
-        let toDos = this.state.toDoList.filter(item => {
-            return item.done === false;
-        });
-        let done = this.state.toDoList.filter(item => {
-            return item.done === true;
-        });
-
+        let toDos = [];
+        let done = [];
+        let orderedUponStaredOrId = this.state.toDoList.sort((a,b) => b.stared - a.stared || a.id - b.id).forEach((item)=>
+        {
+            item.done ? done.push(item) : toDos.push(item)
+        })
         return (
             <div className="appContainer">
                 <Input callbackReset={this.reset} callbackAddToDo={this.addToDo}
