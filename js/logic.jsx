@@ -59,7 +59,6 @@ class ToDo extends React.Component {
     updateName(idReceived, newActivity) {
         let list = this.state.toDoList;
         list[list.findIndex(el => el.id === idReceived)].activity = newActivity;
-        console.log(list);
         this.setState({
             toDoList: list
         });
@@ -83,7 +82,6 @@ class ToDo extends React.Component {
         let done = this.state.toDoList.filter(item => {
             return item.done === true;
         });
-        console.log(this.checkToDosLength())
 
         return (
             <div className="appContainer">
