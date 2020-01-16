@@ -128,8 +128,14 @@ class Item extends React.Component {
         this.toggleStatus = this.toggleStatus.bind(this);
         this.deleteThis = this.deleteThis.bind(this);
         this.updateName = this.updateName.bind(this);
+        this.enableModification = this.enableModification.bind(this);
+        this.moveCaretToTheEnd = this.moveCaretToTheEnd.bind(this);
+        this.resetInputValue = this.resetInputValue.bind(this);
+        this.checkLetter = this.checkLetter.bind(this);
         this.state = {
-            inputValue: this.props.todo.activity
+            inputValue: this.props.todo.activity,
+            isDisabled: true,
+            enableButton: false,
         }
     }
 
@@ -146,10 +152,45 @@ class Item extends React.Component {
     }
 
     updateName() {
-        this.props.callbackChangeName(this.props.todo.id, this.state.inputValue)
+
+        this.props.callbackChangeName(this.props.todo.id, this.state.inputValue);
+        this.textInput.disabled = true;
     }
 
-    //triggers the delete method on parent
+    checkLetter(e) {
+        if ((e.key === 'Enter' && this.textInput.disabled === false)) {
+            this.updateName()
+        } else if (e.keyCode === 27) {
+            this.resetInputValue();
+        } else {
+            this.updateInputValue(e)
+        }
+    }
+
+    resetInputValue() {
+        this.setState({
+            inputValue: this.props.todo.activity
+        });
+        this.textInput.blur();
+        this.setState({
+            enableButton: false
+        });
+    }
+
+    enableModification() {
+        this.setState({
+            enableButton: !this.state.enableButton
+        });
+        this.textInput.disabled = false;
+        this.textInput.focus();
+    }
+
+    moveCaretToTheEnd(e) {
+        e.target.value = '';
+        e.target.value = this.state.inputValue;
+    }
+
+//triggers the delete method on parent
     deleteThis() {
         this.props.callbackDelete(this.props.todo.id);
     }
@@ -164,15 +205,23 @@ class Item extends React.Component {
                     </div>
                 </div>
                 <input
+                    ref={(textInput) => this.textInput = textInput}
                     type="text" className="items"
                     value={this.state.inputValue}
-                    onBlur={this.updateName}
+                    onBlur={this.resetInputValue}
+                    onKeyUp={this.checkLetter}
+                    onFocus={this.moveCaretToTheEnd}
                     onChange={this.updateInputValue}
+                    disabled={true}
                 >
                 </input>
 
                 <div className="itemWrapper">
-                    <div onClick={this.updateName} className="circleSmall">
+                    {/*{this.state.enableButton &&*/}
+                    {/*<div className="circleSmall" onClick={this.updateName}>*/}
+                    {/*    A*/}
+                    {/*</div>}*/}
+                    <div onClick={this.enableModification} className="circleSmall">
                         <i className="fas fa-pencil-alt"/>
                     </div>
                     <div className="circleSmall">
@@ -192,11 +241,12 @@ class Input extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            inputValue: ""
+            inputValue: "",
+            enableInput: false
         };
         this.addItem = this.addItem.bind(this);
         this.updateInputValue = this.updateInputValue.bind(this);
-        this.checkKeyPress13 = this.checkKeyPress13.bind(this)
+        this.checkKeyPress13 = this.checkKeyPress13.bind(this);
     }
 
     addItem() {
