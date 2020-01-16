@@ -15,12 +15,13 @@ class ToDo extends React.Component {
         this.deleteItem = this.deleteItem.bind(this);
         this.changeStatus = this.changeStatus.bind(this);
         this.starToDo = this.starToDo.bind(this);
+        this.updateName = this.updateName.bind(this);
         this.state = {
             toDoList: [
                 new CreateToDO(1, 'My Activity'), new CreateToDO(2, 'Other Activity')
             ]
         };
-        this.nextId = 4;
+        this.nextId = 3;
     }
 
     // resets all the items in both lists
@@ -44,7 +45,6 @@ class ToDo extends React.Component {
         let list = this.state.toDoList.filter(todo => {
             return todo.id !== idReceived;
         });
-
         this.setState({
             toDoList: list
         });
@@ -52,6 +52,16 @@ class ToDo extends React.Component {
 
     starToDo(idReceived) {
 
+    }
+
+    updateName(idReceived, newActivity) {
+        console.log(idReceived, newActivity);
+        let list = this.state.toDoList;
+        list[list.findIndex(el => el.id === idReceived)].activity = newActivity;
+        console.log(list);
+        this.setState({
+            toDoList: list
+        });
     }
 
     changeStatus(idReceived) {
@@ -82,10 +92,11 @@ class ToDo extends React.Component {
                         {toDos.map(item => (
                             <Item
                                 todo={item}
-                                key={item.id}
+                                key={`toDo_${item.id}`}
                                 callbackDelete={this.deleteItem}
                                 callbackMove={this.changeStatus}
                                 callbackStared={this.starToDo}
+                                callbackChangeName={this.updateName}
                             />
                         ))}
                     </ul>
@@ -96,9 +107,11 @@ class ToDo extends React.Component {
                         {done.map(item => (
                             <Item
                                 todo={item}
-                                key={item.id}
+                                key={`done_${item.id}`}
                                 callbackDelete={this.deleteItem}
                                 callbackMove={this.changeStatus}
+                                callbackStared={this.starToDo}
+                                callbackChangeName={this.updateName}
                             />
                         ))}
                     </ul>
@@ -114,6 +127,7 @@ class Item extends React.Component {
         this.updateInputValue = this.updateInputValue.bind(this);
         this.toggleStatus = this.toggleStatus.bind(this);
         this.deleteThis = this.deleteThis.bind(this);
+        this.updateName = this.updateName.bind(this);
         this.state = {
             inputValue: this.props.todo.activity
         }
@@ -129,6 +143,10 @@ class Item extends React.Component {
         this.setState({
             inputValue: e.target.value
         });
+    }
+
+    updateName() {
+        this.props.callbackChangeName(this.props.todo.id, this.state.inputValue)
     }
 
     //triggers the delete method on parent
@@ -148,13 +166,13 @@ class Item extends React.Component {
                 <input
                     type="text" className="items"
                     value={this.state.inputValue}
-                    onBlur={this.updateInputValue}
+                    onBlur={this.updateName}
                     onChange={this.updateInputValue}
                 >
                 </input>
 
                 <div className="itemWrapper">
-                    <div className="circleSmall">
+                    <div onClick={this.updateName} className="circleSmall">
                         <i className="fas fa-pencil-alt"/>
                     </div>
                     <div className="circleSmall">
