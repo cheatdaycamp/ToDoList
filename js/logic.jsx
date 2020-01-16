@@ -1,3 +1,12 @@
+class CreateToDO {
+    constructor(id, activity, done = false, stared = false) {
+        this.id = id;
+        this.activity = activity;
+        this.done = done;
+        this.stared = stared;
+    }
+}
+
 class ToDo extends React.Component {
     constructor(props) {
         super(props);
@@ -8,19 +17,7 @@ class ToDo extends React.Component {
         this.starToDo = this.starToDo.bind(this);
         this.state = {
             toDoList: [
-                {
-                    id: 2,
-                    activity: "Hi",
-                    done: false,
-                    stared: false,
-                },
-                {
-                    id: 3,
-                    activity: "This should start as done",
-                    done: true,
-                    stared: false,
-
-                }
+                new CreateToDO(1, 'My Activity'), new CreateToDO(2, 'Other Activity')
             ]
         };
         this.nextId = 4;
@@ -37,14 +34,8 @@ class ToDo extends React.Component {
     // on button '+' adds a new element.
     addToDo(newElement) {
         this.nextId++;
-        let toDo = {
-            id: this.nextId,
-            activity: newElement,
-            done: false,
-            stared: false,
-        };
         this.setState({
-            toDoList: this.state.toDoList.concat([toDo])
+            toDoList: this.state.toDoList.concat([new CreateToDO(this.nextId, newElement)])
         });
     }
 
