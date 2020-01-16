@@ -249,7 +249,7 @@ class Input extends React.Component {
     }
 
     addItem() {
-        this.props.callbackAddToDo(this.state.inputValue);
+        this.state.inputValue.length && this.props.callbackAddToDo(this.state.inputValue);
         this.setState({
             inputValue: ""
         });
