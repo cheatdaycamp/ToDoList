@@ -50,6 +50,7 @@ class ToDo extends React.Component {
         this.setState({
             toDoList: list
         });
+        this.checkToDosLength()
     }
 
     starToDo(idReceived) {
