@@ -1,11 +1,10 @@
+var express = require('express');
+var app = express();
+const PORT = 7000;
 
-var express = require('express')
-var app = express()
-const PORT = 7000
-
-app.set('port', (process.env.PORT || PORT))
-app.use(express.static(__dirname))
+app.set('port', (process.env.PORT || PORT));
+app.use(express.static(__dirname));
 
 app.listen(app.get('port'), function () {
-  console.log(`localhost:${app.get('port')}/index.html`)
-})
+  console.log(`http://localhost:${app.get('port')}/index.html`)
+});
