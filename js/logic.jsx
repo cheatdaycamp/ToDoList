@@ -23,9 +23,10 @@ class ToDo extends React.Component {
         this.nextId = 3;
     }
 
-    checkToDosLength(){
+    checkToDosLength() {
         return this.state.toDoList.length > 0;
     }
+
     // resets all the items in both lists
     reset() {
         this.setState({
@@ -54,7 +55,12 @@ class ToDo extends React.Component {
     }
 
     starToDo(idReceived) {
-
+        let list = this.state.toDoList;
+        let element =list.findIndex(el => el.id === idReceived)
+            list[element].stared = !list[element].stared ;
+        this.setState({
+            toDoList: list
+        });
     }
 
     updateName(idReceived, newActivity) {
@@ -86,7 +92,8 @@ class ToDo extends React.Component {
 
         return (
             <div className="appContainer">
-                <Input callbackReset={this.reset} callbackAddToDo={this.addToDo} callbackLength = {this.checkToDosLength()}/>
+                <Input callbackReset={this.reset} callbackAddToDo={this.addToDo}
+                       callbackLength={this.checkToDosLength()}/>
                 <div>To Do:</div>
                 <div className="toDo">
                     <ul>
@@ -133,6 +140,7 @@ class Item extends React.Component {
         this.moveCaretToTheEnd = this.moveCaretToTheEnd.bind(this);
         this.resetInputValue = this.resetInputValue.bind(this);
         this.checkLetter = this.checkLetter.bind(this);
+        this.changeStarStatus = this.changeStarStatus.bind(this)
         this.state = {
             inputValue: this.props.todo.activity,
             isDisabled: true,
@@ -153,7 +161,6 @@ class Item extends React.Component {
     }
 
     updateName() {
-
         this.props.callbackChangeName(this.props.todo.id, this.state.inputValue);
         this.textInput.disabled = true;
     }
@@ -191,13 +198,16 @@ class Item extends React.Component {
         e.target.value = this.state.inputValue;
     }
 
-//triggers the delete method on parent
+    changeStarStatus(){
+        this.props.callbackStared(this.props.todo.id)
+        console.log('ok1')
+    }
+    //triggers the delete method on parent
     deleteThis() {
         this.props.callbackDelete(this.props.todo.id);
     }
 
     render() {
-        this.props.element = this.props.inputValue;
         return (
             <li>
                 <div className="itemWrapper">
@@ -225,8 +235,8 @@ class Item extends React.Component {
                     <div onClick={this.enableModification} className="circleSmall">
                         <i className="fas fa-pencil-alt"/>
                     </div>
-                    <div className="circleSmall">
-                        <i className="fas fa-star"/>
+                    <div onClick = {this.changeStarStatus}className={this.props.todo.stared? "stared circleSmall" : "circleSmall"}>
+                        <i className={"fas fa-star" + `${this.props.todo.stared ? " stared " : ""}`}/>
                     </div>
                     <div onClick={this.deleteThis} className="circleSmall">
                         <i className="fas fa-trash-alt"/>
@@ -283,7 +293,7 @@ class Input extends React.Component {
                 </div>
                 {this.props.callbackLength && <div onClick={this.props.callbackReset} className="add">
                     <i className="fas fa-redo"/>
-                </div> }
+                </div>}
             </div>
         );
     }

@@ -185,6 +185,11 @@ ul li {
     border-color: lightgreen
 }
 
+.stared{
+    border-color: gold!important;
+    color: gold!important;
+}
+
 .isHidden {
     display: none;
 }
