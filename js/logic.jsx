@@ -16,14 +16,16 @@ class ToDo extends React.Component {
         this.changeStatus = this.changeStatus.bind(this);
         this.starToDo = this.starToDo.bind(this);
         this.updateName = this.updateName.bind(this);
+        this.checkToDosLength = this.checkToDosLength.bind(this);
         this.state = {
-            toDoList: [
-                new CreateToDO(1, 'My Activity'), new CreateToDO(2, 'Other Activity')
-            ]
+            toDoList: []
         };
         this.nextId = 3;
     }
 
+    checkToDosLength(){
+        return this.state.toDoList.length > 0;
+    }
     // resets all the items in both lists
     reset() {
         this.setState({
@@ -55,7 +57,6 @@ class ToDo extends React.Component {
     }
 
     updateName(idReceived, newActivity) {
-        console.log(idReceived, newActivity);
         let list = this.state.toDoList;
         list[list.findIndex(el => el.id === idReceived)].activity = newActivity;
         console.log(list);
@@ -82,10 +83,11 @@ class ToDo extends React.Component {
         let done = this.state.toDoList.filter(item => {
             return item.done === true;
         });
+        console.log(this.checkToDosLength())
 
         return (
             <div className="appContainer">
-                <Input callbackReset={this.reset} callbackAddToDo={this.addToDo}/>
+                <Input callbackReset={this.reset} callbackAddToDo={this.addToDo} callbackLength = {this.checkToDosLength()}/>
                 <div>To Do:</div>
                 <div className="toDo">
                     <ul>
@@ -242,7 +244,6 @@ class Input extends React.Component {
         super(props);
         this.state = {
             inputValue: "",
-            enableInput: false
         };
         this.addItem = this.addItem.bind(this);
         this.updateInputValue = this.updateInputValue.bind(this);
@@ -281,9 +282,9 @@ class Input extends React.Component {
                         <i className="fas fa-plus"/>
                     </div>
                 </div>
-                <div onClick={this.props.callbackReset} className="add">
+                {this.props.callbackLength && <div onClick={this.props.callbackReset} className="add">
                     <i className="fas fa-redo"/>
-                </div>
+                </div> }
             </div>
         );
     }
