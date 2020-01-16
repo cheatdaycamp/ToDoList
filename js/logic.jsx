@@ -199,7 +199,6 @@ class Item extends React.Component {
 
     changeStarStatus(){
         this.props.callbackStared(this.props.todo.id)
-        console.log('ok1')
     }
     //triggers the delete method on parent
     deleteThis() {
