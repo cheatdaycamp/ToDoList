@@ -1,31 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3edcca59-a91f-4682-b4aa-4449f1dbddad" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/08_Todo.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ToDoList" afterDir="false" />
+    <list default="true" id="3edcca59-a91f-4682-b4aa-4449f1dbddad" name="Default Changelist" comment="Approach of change Activity name">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDoList/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDoList/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDoList/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/ToDoList/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDoList/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/ToDoList/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDoList/offline/babel.js" beforeDir="false" afterPath="$PROJECT_DIR$/ToDoList/offline/babel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDoList/offline/react-dom.js" beforeDir="false" afterPath="$PROJECT_DIR$/ToDoList/offline/react-dom.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDoList/offline/react.js" beforeDir="false" afterPath="$PROJECT_DIR$/ToDoList/offline/react.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDoList/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ToDoList/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDoList/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ToDoList/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDoList/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/ToDoList/.gitignore" afterDir="false" />
     </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/ToDoList" />
   </component>
   <component name="ProjectId" id="1WTH7Ayh88WozQPkXxJ4IN7rVJz" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -48,15 +35,15 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
+  <component name="RunDashboard">
+    <option name="ruleStates">
       <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
       </list>
     </option>
   </component>
@@ -74,7 +61,8 @@
       <workItem from="1579192120419" duration="6877000" />
       <workItem from="1579207777398" duration="3311000" />
       <workItem from="1579525210249" duration="830000" />
-      <workItem from="1579794804226" duration="252000" />
+      <workItem from="1579794804226" duration="907000" />
+      <workItem from="1579868472071" duration="107000" />
     </task>
     <task id="LOCAL-00001" summary="Updated index.js npm start">
       <created>1579192286477</created>
