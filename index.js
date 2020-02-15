@@ -6,5 +6,5 @@ app.set('port', (process.env.PORT || PORT));
 app.use(express.static(__dirname));
 
 app.listen(app.get('port'), function () {
-  console.log(`http://localhost:${app.get('port')}/index.html`)
+  console.log(`http://localhost:${PORT}/index.html`)
 });
